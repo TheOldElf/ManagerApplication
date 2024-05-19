@@ -1,0 +1,66 @@
+﻿@model List<ManagerApplication.Domain.Entities.Order>
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Your Restaurant</a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <form id="logoutForm" asp-controller="Account" asp-action="Logout" method="post" class="form-inline">
+                        <button type="submit" class="btn btn-outline-danger">Logout</button>
+                    </form>
+                }
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h2>Orders</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-12 mb-3">
+            <form asp-action="Index" method="get" class="form-inline">
+                <div class="form-group mr-2">
+                    <select name="sortBy" class="form-control">
+                        <option value="DateAsc">Date (Ascending)</option>
+                        <option value="DateDesc">Date (Descending)</option>
+                        <option value="Keto">Keto</option>
+                        <option value="LactoseFree">Lactose-Free</option>
+                        <option value="HighCarb">High Carb</option>
+                        <option value="Pending">Pending</option>
+                        <option value="InProgress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Sort</button>
+            </form>
+
+        </div>
+        @foreach (var order in Model)
+        {
+            <div class="col-md-4">
+                <partial name="_Order" model="order" />
+                <form asp-action="ChangeStatus" method="post">
+                    <input type="hidden" name="id" value="@order.Id" />
+                    <select name="status" class="form-control">
+                        <option value="Pending">Pending</option>
+                        <option value="InProcess">In Process</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary mt-2">Change Status</button>
+                </form>
+                <form asp-action="DeleteOrder" method="post">
+                    <input type="hidden" name="id" value="@order.Id" />
+                    <button type="submit" class="btn btn-danger mt-2">Delete</button>
+                </form>
+            </div>
+        }
+    </div>
+</div>
