@@ -1,0 +1,14 @@
+﻿@model ManagerApplication.Domain.Entities.Order
+
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">Order</h5>
+        <p class="card-text">Full Name: @Model.FullName</p>
+        <p class="card-text">Address: @Model.Address</p>
+        <p class="card-text">Email: @Model.Email</p>
+        <p class="card-text">Phone Number: @Model.PhoneNumber</p>
+        <p class="card-text">Meal Plan: @Model.MealPlan</p>
+        <p class="card-text">Status: @Model.Status</p>
+        <p class="card-text">Creation Date: @Model.CreationDate.ToShortDateString()</p>
+    </div>
+</div>
