@@ -2,19 +2,19 @@
 
 <div id="loginForm">
     <form asp-action="Login" asp-controller="Account" method="post" class="form-signin" id="loginForm">
-        <h2 class="form-signin-heading">Login</h2>
+        <h2 class="form-signin-heading">Вход</h2>
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="Login" class="control-label"></label>
-            <input asp-for="Login" class="form-control" />
+            <input asp-for="Login" class="form-control" autocomplete="off" />
             <span asp-validation-for="Login" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Password" class="control-label"></label>
-            <input asp-for="Password" class="form-control" />
+            <input asp-for="Password" class="form-control" type="password" autocomplete="new-password" />
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-lg btn-primary btn-block">Sign in</button>
+        <button type="submit" class="btn btn-lg btn-primary btn-block">Войти</button>
     </form>
 </div>
 
@@ -22,9 +22,10 @@
     <script>
         $(function () {
             $('#loginForm').submit(function () {
-                console.log("Processing login...");
+                console.log("Обработка входа...");
                 return false; // Останавливаем действие по умолчанию для предотвращения повторной отправки формы
             });
         });
     </script>
 }
+

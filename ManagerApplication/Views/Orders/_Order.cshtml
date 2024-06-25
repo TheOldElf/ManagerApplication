@@ -1,14 +1,39 @@
 ﻿@model ManagerApplication.Domain.Entities.Order
 
+@{
+    string GetMealPlan(string mealPlan)
+    {
+        return mealPlan switch
+        {
+            "keto" => "Кето",
+            "lactoseFree" => "Без лактозы",
+            "highCarb" => "Высокоуглеводный",
+            _ => mealPlan
+        };
+    }
+
+    string GetOrderStatus(ManagerApplication.Domain.Entities.OrderStatus status)
+    {
+        return status switch
+        {
+            ManagerApplication.Domain.Entities.OrderStatus.Pending => "В ожидании",
+            ManagerApplication.Domain.Entities.OrderStatus.InProgress => "В процессе",
+            ManagerApplication.Domain.Entities.OrderStatus.Completed => "Завершено",
+            ManagerApplication.Domain.Entities.OrderStatus.Rejected => "Отклонено",
+            _ => status.ToString() // Возвращаем значение перечисления как строку, если не нашли соответствие
+        };
+    }
+}
+
 <div class="card mb-3">
     <div class="card-body">
-        <h5 class="card-title">Order</h5>
-        <p class="card-text">Full Name: @Model.FullName</p>
-        <p class="card-text">Address: @Model.Address</p>
+        <h5 class="card-title">Заявка</h5>
+        <p class="card-text">Полное имя: @Model.FullName</p>
+        <p class="card-text">Адрес: @Model.Address</p>
         <p class="card-text">Email: @Model.Email</p>
-        <p class="card-text">Phone Number: @Model.PhoneNumber</p>
-        <p class="card-text">Meal Plan: @Model.MealPlan</p>
-        <p class="card-text">Status: @Model.Status</p>
-        <p class="card-text">Creation Date: @Model.CreationDate.ToShortDateString()</p>
+        <p class="card-text">Номер телефона: @Model.PhoneNumber</p>
+        <p class="card-text">План питания: @GetMealPlan(Model.MealPlan)</p>
+        <p class="card-text">Статус: @GetOrderStatus(Model.Status)</p>
+        <p class="card-text">Дата создания: @Model.CreationDate.ToShortDateString()</p>
     </div>
 </div>

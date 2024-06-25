@@ -38,10 +38,10 @@ namespace ManagerApplication.Mvc.Controllers
                         orders = orders.Where(o => o.MealPlan == "Keto");
                         break;
                     case "LactoseFree":
-                        orders = orders.Where(o => o.MealPlan == "Lactose-Free");
+                        orders = orders.Where(o => o.MealPlan == "lactoseFree");
                         break;
                     case "HighCarb":
-                        orders = orders.Where(o => o.MealPlan == "High Carb");
+                        orders = orders.Where(o => o.MealPlan == "highCarb");
                         break;
                     case "Pending":
                         orders = orders.Where(o => o.Status == OrderStatus.Pending);

@@ -3,64 +3,120 @@
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Your Restaurant</a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <form id="logoutForm" asp-controller="Account" asp-action="Logout" method="post" class="form-inline">
-                        <button type="submit" class="btn btn-outline-danger">Logout</button>
-                    </form>
-                }
-            </li>
-        </ul>
-    </div>
-</nav>
-
-<div class="container mt-5">
-    <h2>Orders</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-12 mb-3">
-            <form asp-action="Index" method="get" class="form-inline">
-                <div class="form-group mr-2">
-                    <select name="sortBy" class="form-control">
-                        <option value="DateAsc">Date (Ascending)</option>
-                        <option value="DateDesc">Date (Descending)</option>
-                        <option value="Keto">Keto</option>
-                        <option value="LactoseFree">Lactose-Free</option>
-                        <option value="HighCarb">High Carb</option>
-                        <option value="Pending">Pending</option>
-                        <option value="InProgress">In Progress</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Rejected">Rejected</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Sort</button>
-            </form>
-
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заявки - Ваш Ресторан</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Ваш Ресторан</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form id="logoutForm" asp-controller="Account" asp-action="Logout" method="post" class="form-inline">
+                            <button type="submit" class="btn btn-outline-danger">Выйти</button>
+                        </form>
+                    }
+                </li>
+            </ul>
         </div>
-        @foreach (var order in Model)
-        {
-            <div class="col-md-4">
-                <partial name="_Order" model="order" />
-                <form asp-action="ChangeStatus" method="post">
-                    <input type="hidden" name="id" value="@order.Id" />
-                    <select name="status" class="form-control">
-                        <option value="Pending">Pending</option>
-                        <option value="InProcess">In Process</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Rejected">Rejected</option>
-                    </select>
-                    <button type="submit" class="btn btn-primary mt-2">Change Status</button>
-                </form>
-                <form asp-action="DeleteOrder" method="post">
-                    <input type="hidden" name="id" value="@order.Id" />
-                    <button type="submit" class="btn btn-danger mt-2">Delete</button>
+    </nav>
+
+    <div class="container mt-5">
+        <h2>Заявки</h2>
+        <hr />
+        <div class="row mb-3">
+            <div class="col-12">
+                <form asp-action="Index" method="get" class="form-inline">
+                    <div class="form-group mr-2">
+                        <select name="sortBy" class="form-control">
+                            <option value="DateAsc">Дата (по возрастанию)</option>
+                            <option value="DateDesc">Дата (по убыванию)</option>
+                            <option value="Keto">Кето</option>
+                            <option value="LactoseFree">Без лактозы</option>
+                            <option value="HighCarb">С высоким содержанием углеводов</option>
+                            <option value="Pending">В ожидании</option>
+                            <option value="InProgress">В процессе</option>
+                            <option value="Completed">Завершено</option>
+                            <option value="Rejected">Отклонено</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сортировать</button>
                 </form>
             </div>
-        }
+        </div>
+        <div class="row">
+            @foreach (var order in Model)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <partial name="_Order" model="order" />
+                        </div>
+                        <div class="card-footer bg-white">
+                            <form asp-action="ChangeStatus" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@order.Id" />
+                                <div class="form-group">
+                                    <select name="status" class="form-control mb-2">
+                                        <option value="Pending">В ожидании</option>
+                                        <option value="InProgress">В процессе</option>
+                                        <option value="Completed">Завершено</option>
+                                        <option value="Rejected">Отклонено</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-sm">Изменить статус</button>
+                            </form>
+                            <form asp-action="DeleteOrder" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@order.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm ml-2">Удалить</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
-</div>
+
+    <style>
+        .card {
+            border-radius: 10px;
+            border: 1px solid #e3e3e3;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-footer {
+            border-top: 1px solid #e3e3e3;
+        }
+
+        .btn {
+            border-radius: 50px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
